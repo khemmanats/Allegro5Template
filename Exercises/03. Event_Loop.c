@@ -12,6 +12,7 @@
 ALLEGRO_DISPLAY* game_display;
 // TODO: [Declare variables]
 // Declare the variables that stores the event queue.
+ALLEGRO_EVENT_QUEUE* event_queue;
 
 // Define screen width and height as constants.
 const int SCREEN_W = 800;
@@ -51,8 +52,11 @@ int main(void) {
     // TODO: [Create event queue]
     // 1) Create event queue and store the pointer in the variable you just declared.
     // 2) Check the pointer, call game_abort if the function failed.
-    
+    event_queue = al_create_event_queue();
+    if (!event_queue)
+        game_abort("failed to create event queue");
     // TODO: [Register display to event queue]
+    al_register_event_source(event_queue, al_get_display_event_source(game_display));
     
     game_log("Allegro5 initialized");
     game_log("Game begin");
@@ -70,8 +74,13 @@ void game_start_event_loop(void) {
     while (!done) {
         // TODO: [Process events]
         // 1) Wait for event and store it in the 'event' variable.
+        al_wait_for_event(event_queue, &event);
         // 2) If the event's type is ALLEGRO_EVENT_DISPLAY_CLOSE, set
         //    'done' to true.
+        if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+            game_log("Window close button clicked");
+            done = true;
+        }
     }
 }
 
@@ -81,6 +90,7 @@ void game_destroy(void) {
     // Free the memories allocated by malloc or allegro functions.
     // We should destroy the event queue we created.
     al_destroy_display(game_display);
+    al_destroy_event_queue(event_queue);
 }
 
 // +=================================================================+

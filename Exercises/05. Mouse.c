@@ -22,6 +22,8 @@ const int SCREEN_W = 800;
 const int SCREEN_H = 600;
 // Mouse state, whether the key is down or not.
 bool* mouse_state;
+bool* mouse_scrollup;
+bool* mouse_scrolldown;
 // Mouse position.
 int mouse_x, mouse_y;
 
@@ -107,6 +109,8 @@ void allegro5_init(void) {
         game_abort("failed to initialize primitives add-on");
     // TODO: [Install mouse]
     // Don't forget to check the return value.
+    if (!al_install_mouse())
+        game_abort("failed to install mouse");
 
     // Malloc mouse buttons state according to button counts.
     const unsigned m_buttons = al_get_mouse_num_buttons();
@@ -117,6 +121,7 @@ void allegro5_init(void) {
 
     al_register_event_source(game_event_queue, al_get_display_event_source(game_display));
     // TODO: [Register mouse to event queue]
+    al_register_event_source(game_event_queue, al_get_mouse_event_source());
     al_register_event_source(game_event_queue, al_get_timer_event_source(game_update_timer));
 
     // Start the timer to update and draw the game.
@@ -143,6 +148,30 @@ void game_start_event_loop(void) {
         //    corresponding element in 'mouse_state' to false.
         // 3) If the event's type is ALLEGRO_EVENT_MOUSE_AXES, log
         //    whether it is mouse move or mouse scroll.
+        else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+            game_log("Mouse button %d down at (%d, %d)", event.mouse.button, event.mouse.x, event.mouse.y);
+            mouse_state[event.mouse.button] = true;
+        }
+        else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+            game_log("Mouse button %d up at (%d, %d)", event.mouse.button, event.mouse.x, event.mouse.y);
+            mouse_state[event.mouse.button] = false;
+        }
+        else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
+            if (event.mouse.dx != 0 || event.mouse.dy != 0) {
+                // Event for mouse move.
+                game_log("Mouse move to (%d, %d)", event.mouse.x, event.mouse.y);
+                mouse_x = event.mouse.x;
+                mouse_y = event.mouse.y;
+            }
+            else if (event.mouse.dz != 0) {
+                // Event for mouse scroll.
+                if(event.mouse.dz == 1)
+                    mouse_scrollup = 1;
+                else if(event.mouse.dz == -1)
+                    mouse_scrolldown = 1;
+                game_log("Mouse scroll at (%d, %d) with delta %d", event.mouse.x, event.mouse.y, event.mouse.dz);
+            }
+        }
         else if (event.type == ALLEGRO_EVENT_TIMER) {
             // Event for redrawing the display.
             if (event.timer.source == game_update_timer) {
@@ -157,7 +186,25 @@ void game_update(void) {
     // TODO: [Update coordinates]
     // Update 'x' and 'y' according to the current mouse position.
     // Update 'color' according to which mouse button is pressed.
-}
+    x = mouse_x;
+    y = mouse_y;
+    if (mouse_state[1])
+        color = al_map_rgb(255, 255, 255);
+    else if (mouse_state[2])
+        color = al_map_rgb(255, 0, 0);
+    else if (mouse_state[3])
+        color = al_map_rgb(0, 0, 255);
+    else if (mouse_scrollup) {
+        color = al_map_rgb(255, 255, 0);
+        mouse_scrollup = false;
+    }
+    else if (mouse_scrolldown) {
+        color = al_map_rgb(0, 255, 255);
+        mouse_scrolldown = false;
+    }
+    else
+        color = al_map_rgb(0, 0, 0);
+}    
 
 void game_draw(void) {
     al_clear_to_color(al_map_rgb(100, 100, 100));
