@@ -8,16 +8,20 @@ We will use Allegro 5 in the final project.
 
   You should finish installing and setting up Allegro5 on your own computer and practice the exercises before Hackathon.
 
-- 12/19 (Sat.) 09:00-20:00 Hackathon for Prof. Yang's Class (grading 2%)
-- 12/20 (Sun.) 09:00-20:00 Hackathon for Prof. Hu's Class (grading 2%)
+- 12/19 (Sat.) 09:00-17:00 Hackathon for Prof. Yang's Class (grading 2%)
+- 12/20 (Sun.) 09:00-17:00 Hackathon for Prof. Hu's Class (grading 2%)
 - 01/18 (Mon.) Final Project Demo, details will be announced one week before (grading 13%)
 
-
 Related Links:
+- **[Fast Download Link for files below (Google Drive)](https://drive.google.com/drive/folders/1M1cWB27eXuR60JmlZTVwaamQ7FIb4uPu?usp=sharing)**
 - [Exercises](/Exercises)
 - [Exercises step-by-step video](https://youtu.be/Araij6j6QME)
 - **(New)** [Exercises Template](https://github.com/j3soon/Allegro5Template/releases/download/v2020/Exercises.Template.zip)
 - [Tutorial Slides](https://github.com/j3soon/Allegro5Template/blob/master/Allegro5_Tutorial.pdf)
+- [Final Project Rules](https://github.com/j3soon/Allegro5Template/blob/master/Final_Project_Rules.pdf)
+- [Final Project Rules (English)](https://github.com/j3soon/Allegro5Template/blob/master/Final_Project_Rules_Eng.pdf)
+- [Final Code (basic)](/Final%20Code%20\(basic\))
+- [Final Code (advanced)](/Final%20Code%20\(advanced\))
 
 <!--
 PPT: [allegro5_tutorial.pdf](/allegro5_tutorial.pdf)
@@ -49,7 +53,7 @@ Follow the steps [here](docs/README.md).
 
   [Allegro 5.0 reference manual](https://www.allegro.cc/manual/5/)
 
-- GitHub repo
+- GitHub repo of Allegro 5
 
   [Source Code](https://github.com/liballeg/allegro5)
 
